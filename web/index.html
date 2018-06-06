@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+    <head>
+        <style type="text/css">
+
+            body {font-family:Arial, Sans-Serif;}
+
+            #container {width:300px; margin:0 auto;}
+
+            /* Nicely lines up the labels. */
+            .form label {display:inline-block; width:140px;}
+
+            /* You could add a class to all the input boxes instead, if you like. That would be safer, and more backwards-compatible */
+            .form input[type="text"],
+            .form input[type="password"],
+            .form input[type="email"] {width:160px;}
+
+            .form .line {clear:both;}
+            .form .line.submit {text-align:right;}
+
+        </style>
+    </head>
+    <body>
+
+        <div id="container">
+            <div class="form" >
+                <h1>Add details</h1>
+				<p style='color:green;' id="succ_rec"></p>
+				<p style='color:red;' id="err_rec"></p>
+				
+                <div class="line"><label for="username">First Name : </label><input type="text" id="fname" name="fname" /></div>
+                <div class="line"><label for="pwd">Second Name  : </label><input type="text" id="sname" name="sname" /></div>
+                <!-- You may want to consider adding a "confirm" password box also -->
+                <div class="line"><label for="surname">Email *: </label><input type="email" id="email" name="email" /></div>
+                <div class="line"><label for="other_names">Mobile *: </label><input type="number" id="mobile" name="mobile" /></div>
+                
+                <div class="line submit"><input type="submit" value="Submit" class="submitform" /></div>
+
+                
+            </div>
+        </div>
+		
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    (function($){
+       $('body').on('click','.submitform',function(){
+		 
+		 
+		
+		 
+		
+		 var fname = $('#fname').val();
+		 var sname = $('#sname').val();
+		 var email = $('#email').val();
+		 var mobile = $('#mobile').val();
+		 if(fname == "" || sname == "" || email == "" || mobile == "")
+			{
+			$('#succ_rec').text('');
+			$('#err_rec').text('');
+			 $('#err_rec').text('Please enter all data');
+			 return false;
+			}		 
+		 
+		var form_data = {  
+						fname: fname,
+						sname : sname,
+						email : email,
+						mobile :mobile
+											
+					};
+					
+			$.ajax({
+						context:this,
+						type: "POST",
+						url: 'insert.php',
+						data: form_data,
+						success: function (msg) {
+						 debugger;
+						if(msg.trim() == "1")
+						{
+							$('#succ_rec').text('');
+							$('#err_rec').text('');
+							$('#succ_rec').text('Successfully added your data');
+						}
+						else if(msg.trim() == "0")
+						{
+							$('#succ_rec').text('');
+							$('#err_rec').text('');
+							$('#err_rec').text('An unexpected error occurred');
+						}
+						else{
+							$('#succ_rec').text('');
+							$('#err_rec').text('');
+							$('#err_rec').text('Please enter all data');
+						}
+						}
+					});
+		
+		
+		
+	 
+	 });
+    })(jQuery);
+</script>
+		
+    </body>
+	
+	
+	
+</html>
